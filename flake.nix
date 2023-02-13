@@ -31,10 +31,12 @@
             }
             # Enable our own systemd-boot implementation
             ./extensions/systemd-boot-override/systemd-boot.nix
+            hyprland.nixosModules.default # Hyprland is unused, but we need to import to suppress an error about hyprland being undefined
             lanzaboote.nixosModules.lanzaboote
             home-manager.nixosModules.home-manager
-            nixos-hardware.nixosModules.common-pc-amd
-            nixos-hardware.nixosModules.common-pc-nvidia-nonprime
+            nixos-hardware.nixosModules.common-cpu-amd
+            nixos-hardware.nixosModules.common-gpu-nvidia-nonprime
+            nixos-hardware.nixosModules.common-pc
             nixos-hardware.nixosModules.common-pc-ssd
             ./devices/shared.nix
             ./devices/nirvana/hardware-configuration.nix
