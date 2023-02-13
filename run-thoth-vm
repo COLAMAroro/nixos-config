@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+function buildOnePort() {
+    local port=$1
+    return "hostfwd=::${port}-:${port}"
+}
+
+function buildPorts() {
+    local ports=("$@")
+    local portCommand=""
+    for port in "${ports[@]}"; do
+        portCommand="${portCommand}$(buildOnePort $port),"
+    done
+    echo "${portCommand::-1}"
+}
+
+vmname = "thoth"
+ports = (
+    21 # FTP
+    22 # SSH
+    4533 # Navidrome
+)
+portCommand = $(buildPorts $ports)
+
+nixos-rebuild build-vm .\#$vmname
+rm -f $vmname.qcow2
+QEMU_NET_OPTS=$portCommand ./result/bin/run-$vmname-vm
