@@ -1,0 +1,5 @@
+# Doing black magic with the prompt to prepend "(node) " to the PS1
+# $IS_NODE_ENV is exported in the shell.nix manually, not black to see if we actually are in one
+[[ -v IS_NODE_ENV ]] && export PS1="(node) ${PS1:2}"
+
+# I don't use bash, but you know, someone might
