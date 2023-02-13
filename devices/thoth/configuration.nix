@@ -5,10 +5,13 @@
   networking.hostName = "thoth";
   networking.networkmanager.enable = true;
   services.zerotierone.enable = true;
-  services.zerotierone.joinNetworks = [
-    "159924d6302966a9" # Personal network
-  ];
+  #services.zerotierone.joinNetworks = [
+  #  "159924d6302966a9" # Personal network
+  #];
   services.openssh.enable = true;
+  networking.firewall.enable = true;
+  networking.firewall.allowedTCPPorts = [ 21 22 4533 ];
+  networking.firewall.allowedUDPPorts = [ 21 22 4533 ];
 
   # ========== Boot Settings ==========
   boot.loader.systemd-boot.enable = true;
@@ -23,17 +26,17 @@
   # ========== (S)FTP User Settings ==========
 
   systemd.tmpfiles.rules = [
-    "d /var/media 0760 media mediashare"
+    "d /var/media 0760 mediashare mediashare"
   ];
   users.groups.mediashare.name = "mediashare";
   users.users.mediashare = {
     isSystemUser = true;
     home = "/var/media";
-    createHome = true;
+    createHome = false; # Ensured via tmpfiles.rules
     initialPassword = "mediashare";
-    group = "media";
+    group = "mediashare";
   };
-  users.users.cola.extraGroups = [ "media" ];
+  users.users.cola.extraGroups = [ "mediashare" ];
 
   # home-manager.users.cola = { pkgs, config, lib, home, ... }: {
   #   home.activation = {
@@ -53,12 +56,13 @@
     "mediashare"
   ];
   services.vsftpd.writeEnable = true;
+  services.vsftpd.localUsers = true;
 
   # ========== Music Stream Settings ==========
 
   services.navidrome.enable = true;
   services.navidrome.settings = {
-    MusicFolder = "/var/ftpshare/Music";
+    MusicFolder = "/var/media/Music";
     FFmpegPath = "${pkgs.ffmpeg}/bin/ffmpeg";
     PasswordEncryptionKey = "WYo4WpKf7UnyS46Z";
   };

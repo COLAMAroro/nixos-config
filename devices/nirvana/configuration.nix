@@ -10,9 +10,6 @@
     "159924d6302966a9" # Personal network
   ];
   services.openssh.enable = true;
-  networking.firewall.enable = true;
-  networking.firewall.allowedTCPPorts = [ 21 22 4533 ];
-  networking.firewall.allowedUDPPorts = [ 21 22 4533 ];
 
   # ========== Graphical Settings ==========
 
