@@ -22,25 +22,27 @@
   };
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
-  boot.kernelPackages = nixpkgs.linuxPackages_5_15;
+  boot.kernelPackages = pkgs.linuxPackages_5_15;
   boot.bootspec.enable = true;
 
   # ========== Virtualisation Settings ==========
   virtualisation.libvirtd.enable = true;
   virtualisation.docker.enable = true;
   virtualisation.docker.rootless.enable = true;
-  virtualisation.docker.rootless.setSocketVariables = true;
+  virtualisation.docker.rootless.setSocketVariable = true;
   virtualisation.anbox.enable = true;
 
   # ========== Misc Settings ==========
+  nixpkgs.config.allowUnfree = true;
   system.stateVersion = "22.05"; # Did you read the comment?
   services.xserver.videoDrivers = [ "displaylink" "modesetting" ];
-  environment.systemPackages = with nixpkgs; [
+  environment.systemPackages = [
     pkgs.virt-manager
     pkgs.sbctl
   ];
-  services.udev.packages = [ nixpkgs.gnome.gnome-settings-daemon ];
+  services.udev.packages = [ pkgs.gnome.gnome-settings-daemon ];
   services.udev.extraRules = builtins.readFile ./udev.txt;
+  xdg.portal.enable = true;
+  xdg.portal.extraPortals = [ pkgs.flatpak pkgs.gnome.gnome-software ];
   services.flatpak.enable = true;
-
 }

@@ -1,9 +1,9 @@
 { config
 , pkgs
 , home-manager
-, isNotWSL ? false
+, isNotWSL ? true
 , isGraphical ? true
-, hasHyperland ? false
+, hasHyprland ? false
 , hasGnome ? true
 , ...
 }:
@@ -30,7 +30,7 @@ let
     pkgs.gnomeExtensions.appindicator
   ];
 
-  hyperlandPackages = pkgs.lib.optionals (hasHyperland && isGraphical) [
+  hyprlandPackages = pkgs.lib.optionals (hasHyprland && isGraphical) [
     # Hyprland
     pkgs.libsForQt5.dolphin
     pkgs.wofi
@@ -67,7 +67,7 @@ in
   home-manager.extraSpecialArgs = {
     inherit (isWSL);
     inherit (isGraphical);
-    inherit (hasHyperland);
+    inherit (hasHyprland);
     inherit (hasGnome);
     currentSystem = config.system;
   };
@@ -92,7 +92,7 @@ in
     home.packages = pkgs.lib.flatten [
       commonPackages
       graphicalPackages
-      hyperlandPackages
+      hyprlandPackages
       gnomePackages
       wslPackage
     ];
@@ -168,7 +168,7 @@ in
     programs.htop.enable = isNotWSL;
     programs.navi.enable = true;
     programs.tealdeer.enable = true;
-    programs.kitty.enable = isGraphical && hasHyperland;
+    programs.kitty.enable = isGraphical && hasHyprland;
 
     programs.nnn.enable = true;
     programs.nnn.package = pkgs.nnn.override ({ withNerdIcons = true; });

@@ -11,7 +11,15 @@
     hyprland.url = "github:hyprwm/Hyprland";
   };
 
-  outputs = { self, nixpkgs, home-manager, lanzaboote, hyprland, ... }@inputs:
+  outputs =
+    { self
+    , nixpkgs
+    , nixos-hardware
+    , home-manager
+    , lanzaboote
+    , hyprland
+    , ...
+    }@inputs:
     {
       nixosConfigurations.nirvana =
         nixpkgs.lib.nixosSystem {
@@ -28,10 +36,17 @@
             nixos-hardware.nixosModules.common-pc-amd
             nixos-hardware.nixosModules.common-pc-nvidia-nonprime
             nixos-hardware.nixosModules.common-pc-ssd
+            ./devices/shared.nix
             ./devices/nirvana/hardware-configuration.nix
             ./devices/nirvana/configuration.nix
             ./user/cola.nix
           ];
+          specialArgs = inputs // {
+            isGraphical = true;
+            isNotWSL = true;
+            hasGnome = true;
+            hasHyprland = false;
+          };
         };
       nixosConfigurations."hades" =
         nixpkgs.lib.nixosSystem {
@@ -41,13 +56,17 @@
             lanzaboote.nixosModules.lanzaboote
             home-manager.nixosModules.home-manager
             nixos-hardware.nixosModules.lenovo-thinkpad-t470s
+            ./devices/shared.nix
             ./devices/hades/zfs.nix
             ./devices/hades/hardware-configuration.nix
             ./devices/hades/configuration.nix
-            ./home.nix
+            ./user/cola.nix
           ];
           specialArgs = inputs // {
-            hasHyperland = true;
+            isGraphical = true;
+            isNotWSL = true;
+            hasGnome = true;
+            hasHyprland = true;
           };
         };
     };

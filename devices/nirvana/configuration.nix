@@ -38,5 +38,6 @@
 
   # ========== Misc Settings ==========
   system.stateVersion = "22.11";
+  nixpkgs.config.allowUnfree = true;
 }
 

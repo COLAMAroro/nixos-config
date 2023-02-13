@@ -13,7 +13,7 @@
   i18n.defaultLocale = "fr_FR.UTF-8";
   console = {
     font = "Lat2-Terminus16";
-    keyMap = "fr";
+    keyMap = pkgs.lib.mkDefault "fr";
     useXkbConfig = true;
   };
   time.timeZone = "Europe/Paris";
@@ -79,7 +79,7 @@
     pkgs.gnome.gnome-tweaks
     pkgs.gnomeExtensions.dash-to-panel
     pkgs.gnomeExtensions.appindicator
-  ];
+  ] ++ (if isGraphical then [ pkgs.firefox ] else [ pkgs.links2 ]);
 
   fonts.fonts = pkgs.lib.optionals isGraphical [
     (pkgs.nerdfonts.override
@@ -116,16 +116,11 @@
       trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
     };
   };
-  nix.registry = {
-    "nixpkgs" = "github:nixos/nixpkgs";
-    "hyprland" = "github:hyprland/nixpkgs";
-    "lanzaboote" = "github:lanzaboote/nixpkgs";
-  };
 
   # ========== Gnome Settings ==========
 
   programs.dconf.enable = hasGnome;
-  environment.gnome.excludePackages = pkgs.lib.optionals [
+  environment.gnome.excludePackages = pkgs.lib.optionals hasGnome [
     pkgs.gnome-tour
     pkgs.gnome.gnome-characters
     pkgs.gnome.gnome-maps
