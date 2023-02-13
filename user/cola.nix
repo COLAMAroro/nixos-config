@@ -60,6 +60,9 @@ in
     initialPassword = "COLA2023";
     extraGroups = [ "wheel" ];
     shell = pkgs.fish;
+    openssh.authorizedKeys.keyFiles = [
+      ./id_rsa.pub
+    ];
   };
 
   home-manager.useGlobalPkgs = true;

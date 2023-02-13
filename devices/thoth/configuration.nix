@@ -25,23 +25,26 @@
   systemd.tmpfiles.rules = [
     "d /var/media 0760 media mediashare"
   ];
+  users.groups.mediashare.name = "mediashare";
   users.users.mediashare = {
     isSystemUser = true;
     home = "/var/media";
     createHome = true;
     initialPassword = "mediashare";
+    group = "media";
   };
   users.users.cola.extraGroups = [ "media" ];
-  home-manager.users.cola = { pkgs, config, home, ...} : {
-    home.activation = {
-      linkMedia = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        [ -d /var/media ] && [ ! -L ${home.homeDirectory}/media ] &&
-        mkdir -p ${home.homeDirectory}/media &&
-        ln -s /var/media ${home.homeDirectory}/media
-      '';
-    };
-  };
-  
+
+  # home-manager.users.cola = { pkgs, config, lib, home, ... }: {
+  #   home.activation = {
+  #     linkMedia = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+  #       [ -d /var/media ] && [ ! -L ${home.homeDirectory}/media ] &&
+  #       mkdir -p ${home.homeDirectory}/media &&
+  #       ln -s /var/media ${home.homeDirectory}/media
+  #     '';
+  #   };
+  # };
+
   # ========== FTP Share Settings ==========
 
   services.vsftpd.enable = true;
@@ -49,7 +52,6 @@
     "cola"
     "mediashare"
   ];
-  services.vsftpd.userlist_deny = false;
   services.vsftpd.writeEnable = true;
 
   # ========== Music Stream Settings ==========
