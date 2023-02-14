@@ -10,8 +10,8 @@
   #];
   services.openssh.enable = true;
   networking.firewall.enable = true;
-  networking.firewall.allowedTCPPorts = [ 21 22 4533 ];
-  networking.firewall.allowedUDPPorts = [ 21 22 4533 ];
+  networking.firewall.allowedTCPPorts = [ 21 22 80 443 4533 ];
+  networking.firewall.allowedUDPPorts = [ 21 22 80 443 4533 ];
 
   # ========== Boot Settings ==========
   boot.loader.systemd-boot.enable = true;
@@ -26,7 +26,8 @@
   # ========== (S)FTP User Settings ==========
 
   systemd.tmpfiles.rules = [
-    "d /var/media 0760 mediashare mediashare"
+    "d /var/media 0770 mediashare mediashare"
+    "d /var/media/Music 0770 mediashare mediashare"
   ];
   users.groups.mediashare.name = "mediashare";
   users.users.mediashare = {
@@ -58,14 +59,42 @@
   services.vsftpd.writeEnable = true;
   services.vsftpd.localUsers = true;
 
+  # ========== Reverse Proxy settings ==========
+
+  services.caddy = {
+    enable = true;
+    acmeCA = "https://acme-staging-v02.api.letsencrypt.org/directory"; # Temporary, for staging tests
+    virtualHosts."http://thoth.snek.network" = {
+      hostName = "http://thoth.snek.network";
+      extraConfig = ''
+        reverse_proxy /music localhost:4533
+        respond / "Hi"
+      '';
+    };
+    globalConfig = ''
+      debug
+      auto_https disable_redirects
+    '';
+  };
+
   # ========== Music Stream Settings ==========
 
-  services.navidrome.enable = true;
-  services.navidrome.settings = {
-    MusicFolder = "/var/media/Music";
-    FFmpegPath = "${pkgs.ffmpeg}/bin/ffmpeg";
-    PasswordEncryptionKey = "WYo4WpKf7UnyS46Z";
+  virtualisation.oci-containers.backend = "docker";
+  virtualisation.oci-containers.containers = {
+    navidrome = {
+      image = "deluan/navidrome:latest";
+      volumes = [
+        "/var/media/Music:/music:ro"
+        "navidromeData:/data"
+      ];
+      environment = {
+        "ND_DEFAULTTHEME" = "Spotify-Ish";
+        "ND_DEFAULTLANGUAGE" = "fr";
+      };
+      ports = [ "4533:4533" ];
+    };
   };
+
 
   # ========== Misc Settings ==========
   system.stateVersion = "22.11";

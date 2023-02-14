@@ -2,7 +2,7 @@
 
 set -e # Exit on error
 vmname="thoth"
-export QEMU_NET_OPTS="hostfwd=::2121-:21,hostfwd=::2222-:22,hostfwd=::4533-:4533"
+export QEMU_NET_OPTS="hostfwd=::2121-:21,hostfwd=::2222-:22,hostfwd=::8080-:80,hostfwd=::8443-:443,hostfwd=::4533-:4533"
 
 nixos-rebuild build-vm --flake .\#$vmname
 rm -f $vmname.qcow2
