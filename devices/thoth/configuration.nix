@@ -37,7 +37,14 @@
     initialPassword = "mediashare";
     group = "mediashare";
   };
+
   users.users.cola.extraGroups = [ "mediashare" ];
+  users.users.mykado = {
+    isNormalUser = true;
+    initialPassword = "Mykado";
+    extraGroups = [ "mediashare" "wheel" ];
+    shell = pkgs.bashInteractive;
+  };
 
   # home-manager.users.cola = { pkgs, config, lib, home, ... }: {
   #   home.activation = {
