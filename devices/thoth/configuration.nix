@@ -5,13 +5,13 @@
   networking.hostName = "thoth";
   networking.networkmanager.enable = true;
   services.zerotierone.enable = true;
-  #services.zerotierone.joinNetworks = [
-  #  "159924d6302966a9" # Personal network
-  #];
+  services.zerotierone.joinNetworks = [
+    "159924d6302966a9" # Personal network
+  ];
   services.openssh.enable = true;
   networking.firewall.enable = true;
-  networking.firewall.allowedTCPPorts = [ 21 22 80 443 4533 ];
-  networking.firewall.allowedUDPPorts = [ 21 22 80 443 4533 ];
+  networking.firewall.allowedTCPPorts = [ 21 22 80 443 4533 8123 ];
+  networking.firewall.allowedUDPPorts = [ 21 22 80 443 4533 8123 ];
 
   # ========== Boot Settings ==========
   boot.loader.systemd-boot.enable = true;
@@ -38,12 +38,14 @@
     group = "mediashare";
   };
 
+  # ========== User Settings ==========
+
   users.users.cola.extraGroups = [ "mediashare" ];
   users.users.mykado = {
     isNormalUser = true;
     initialPassword = "Mykado";
     extraGroups = [ "mediashare" "wheel" ];
-    shell = pkgs.bashInteractive;
+    shell = pkgs.zsh;
   };
 
   # home-manager.users.cola = { pkgs, config, lib, home, ... }: {
@@ -84,26 +86,25 @@
     '';
   };
 
-  # ========== Music Stream Settings ==========
+  # ========== Home Assistant Settings ==========
 
-  virtualisation.oci-containers.backend = "docker";
-  virtualisation.oci-containers.containers = {
-    navidrome = {
-      image = "deluan/navidrome:latest";
-      volumes = [
-        "/var/media/Music:/music:ro"
-        "navidromeData:/data"
-      ];
-      environment = {
-        "ND_DEFAULTTHEME" = "Spotify-Ish";
-        "ND_DEFAULTLANGUAGE" = "fr";
-      };
-      ports = [ "4533:4533" ];
+  virtualisation.oci-containers.containers.homeassistant = {
+    image = "ghcr.io/home-assistant/home-assistant:stable";
+    volumes = [
+      "homeassistantConfig:/config"
+    ];
+    environment = {
+      "TZ" = "Europe/Paris";
     };
+    extraOptions = [
+      "--privileged"
+      "--network=host"
+    ];
+    ports = [ "8123:8123" ];
   };
 
-
   # ========== Misc Settings ==========
+
   system.stateVersion = "22.11";
   nixpkgs.config.allowUnfree = true;
 }
