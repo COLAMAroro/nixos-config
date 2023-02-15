@@ -84,7 +84,7 @@
           ];
           specialArgs = inputs // {
             isGraphical = false;
-            isNotWSL = false;
+            isNotWSL = true;
             hasGnome = false;
             hasHyprland = false;
           };

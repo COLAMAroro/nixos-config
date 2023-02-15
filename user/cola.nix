@@ -10,7 +10,7 @@
 
 let
   graphicalPackages = pkgs.lib.optionals isGraphical [
-    # We are *not* in WSL
+    # Grahical environments
     pkgs.teams
     pkgs.discord
     pkgs.vscode
@@ -37,7 +37,7 @@ let
     pkgs.waybar
   ];
 
-  wslPackage = pkgs.lib.optionals isNotWSL [
+  wslPackage = pkgs.lib.optionals (!isNotWSL) [
     pkgs.wslu
   ];
 
@@ -68,7 +68,7 @@ in
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
   home-manager.extraSpecialArgs = {
-    inherit (isWSL);
+    inherit (isNotWSL);
     inherit (isGraphical);
     inherit (hasHyprland);
     inherit (hasGnome);
