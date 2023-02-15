@@ -105,6 +105,7 @@
 
   # ========== Misc Settings ==========
 
+  virtualisation.oci-containers.backend = "docker";
   system.stateVersion = "22.11";
   nixpkgs.config.allowUnfree = true;
 }
