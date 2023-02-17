@@ -17,12 +17,6 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # ========== Virtualisation Settings ==========
-
-  virtualisation.docker.enable = true;
-  virtualisation.docker.rootless.enable = true;
-  virtualisation.docker.rootless.setSocketVariable = true;
-
   # ========== (S)FTP User Settings ==========
 
   systemd.tmpfiles.rules = [
@@ -68,45 +62,8 @@
   services.vsftpd.writeEnable = true;
   services.vsftpd.localUsers = true;
 
-  # ========== Reverse Proxy settings ==========
-
-  services.caddy = {
-    enable = true;
-    acmeCA = "https://acme-staging-v02.api.letsencrypt.org/directory"; # Temporary, for staging tests
-    virtualHosts."http://thoth.snek.network" = {
-      hostName = "http://thoth.snek.network";
-      extraConfig = ''
-        reverse_proxy /music localhost:4533
-        respond / "Hi"
-      '';
-    };
-    globalConfig = ''
-      debug
-      auto_https disable_redirects
-    '';
-  };
-
-  # ========== Home Assistant Settings ==========
-
-  virtualisation.oci-containers.containers.homeassistant = {
-    image = "ghcr.io/home-assistant/home-assistant:stable";
-    volumes = [
-      "homeassistantConfig:/config"
-    ];
-    environment = {
-      "TZ" = "Europe/Paris";
-    };
-    extraOptions = [
-      "--privileged"
-      "--network=host"
-      "--device=/dev/ttyACM0"
-    ];
-    ports = [ "8123:8123" ];
-  };
-
   # ========== Misc Settings ==========
 
-  virtualisation.oci-containers.backend = "docker";
   system.stateVersion = "22.11";
   nixpkgs.config.allowUnfree = true;
 }

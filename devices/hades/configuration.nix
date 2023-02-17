@@ -27,11 +27,6 @@
 
   # ========== Virtualisation Settings ==========
   virtualisation.libvirtd.enable = true;
-  virtualisation.docker.enable = true;
-  virtualisation.docker.rootless.enable = true;
-  virtualisation.docker.rootless.setSocketVariable = true;
-  virtualisation.lxd.enable = true;
-  virtualisation.waydroid.enable = true;
 
   # ========== Misc Settings ==========
   nixpkgs.config.allowUnfree = true;
