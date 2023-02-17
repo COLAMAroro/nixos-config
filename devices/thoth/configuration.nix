@@ -99,6 +99,7 @@
     extraOptions = [
       "--privileged"
       "--network=host"
+      "--device=/dev/ttyACM0"
     ];
     ports = [ "8123:8123" ];
   };
