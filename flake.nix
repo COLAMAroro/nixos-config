@@ -89,5 +89,23 @@
             hasHyprland = false;
           };
         };
+      nixosConfigurations."apollo" =
+        nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            hyprland.nixosModules.default
+            home-manager.nixosModules.home-manager
+            ./devices/shared.nix
+            ./devices/apollo/hardware-configuration.nix
+            ./devices/apollo/configuration.nix
+            ./user/cola.nix
+          ];
+          specialArgs = inputs // {
+            isGraphical = false;
+            isNotWSL = true;
+            hasGnome = false;
+            hasHyprland = false;
+          };
+        };
     };
 }
