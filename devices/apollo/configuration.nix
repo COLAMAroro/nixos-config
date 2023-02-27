@@ -65,7 +65,9 @@
   # ========== Music player Settings ==========
 
   services.navidrome.enable = true;
-  services.navidrome.settings.MusicFolder = "/var/media/Music";
+  services.navidrome.settings = {
+    MusicFolder = "/var/media/Music";
+  };
 
   # ========== Misc Settings ==========
 
