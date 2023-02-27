@@ -7,7 +7,6 @@
   boot.cleanTmpDir = true;
   zramSwap.enable = true;
   networking.domain = "snek.network";
-  services.openssh.enable = true;
 
   # ========== Netwoking Settings ==========
   networking.hostName = "apollo";
