@@ -62,6 +62,11 @@
   services.vsftpd.writeEnable = true;
   services.vsftpd.localUsers = true;
 
+  # ========== Music player Settings ==========
+
+  services.navidrome.enable = true;
+  services.navidrome.settings.MusicFolder = "/var/media/Music";
+
   # ========== Misc Settings ==========
 
   system.stateVersion = "22.11";
