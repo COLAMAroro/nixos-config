@@ -11,6 +11,8 @@ Here is my NixOS configuration, for my different devices.
   - `shared.nix`: Shared configuration between all devices
   - `hades/`: ThinkPad t470s laptop, main NixOS device
   - `nirvana/`: Desktop PC, dual-boot with Windows 11 (Windows being the default)
+  - `thoth/`: Small NUC, used as a local server (Home-Assistant, AirTable, etc.)
+  - `apollo/`: VPS (Contabo), used as a music streaming server, and other web services
 - `user/`: Home-Manager configuration
 
 ## Feature selection
@@ -27,6 +29,7 @@ Feature selection is done with `specialArgs` in NixOS configurations. Here are t
 Ordered from most important to least important.
 
 - Encrypt secrets with agenix or sops-nix (for user password and bitwarden tokens)
+- Disko to manage drives
 - Maybe add a `readme.md` for each device, to explain what's special about it ?
 - A complete hyprland configuration (including waybar)
 - Maybe usual "devShells" for my most used languages ?
