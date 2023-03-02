@@ -4,7 +4,7 @@
   # ========== Netwoking Settings ==========
   networking.hostName = "anunnaki";
   networking.domain = "snek.network";
-  networking.networkmanager.enable = true;
+  #networking.networkmanager.enable = true; # Not sure if I want to use this yet
   services.zerotierone.enable = true;
   services.zerotierone.joinNetworks = [
     "159924d6302966a9" # Personal network
@@ -34,5 +34,7 @@
   # ========== Misc Settings ==========
   system.stateVersion = "23.05";
   nixpkgs.config.allowUnfree = true;
+  boot.cleanTmpDir = true;
+  zramSwap.enable = true;
 }
 
