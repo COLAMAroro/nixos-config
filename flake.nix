@@ -9,6 +9,8 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote"; # Lanzaboote is currently unused, as support for dual-boot is *janky*
     hyprland.url = "github:hyprwm/Hyprland";
+    disko.url = "github:nix-community/disko";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -18,6 +20,7 @@
     , home-manager
     , lanzaboote
     , hyprland
+    , disko
     , ...
     }@inputs:
     {
@@ -113,10 +116,12 @@
           modules = [
             hyprland.nixosModules.default
             home-manager.nixosModules.home-manager
+            disko.nixosModules.disko
             ./devices/shared.nix
             ./devices/anunnaki/hardware-configuration.nix
             ./devices/anunnaki/configuration.nix
             ./user/cola.nix
+            { disko.devices = import ./devices/anunnaki/disk.nix { lib = nixpkgs.lib; }; }
           ];
           specialArgs = inputs // {
             isGraphical = false;
