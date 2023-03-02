@@ -116,12 +116,14 @@
           modules = [
             hyprland.nixosModules.default
             home-manager.nixosModules.home-manager
-            disko.nixosModules.disko
             ./devices/shared.nix
             ./devices/anunnaki/hardware-configuration.nix
             ./devices/anunnaki/configuration.nix
             ./user/cola.nix
-            { disko.devices = import ./devices/anunnaki/disk.nix { lib = nixpkgs.lib; }; }
+            ({ modulesPath, ... }: {
+              imports = [ disko.nixosModules.disko ];
+              disko.devices = import ./devices/anunnaki/disk.nix { lib = nixpkgs.lib; };
+            })
           ];
           specialArgs = inputs // {
             isGraphical = false;
