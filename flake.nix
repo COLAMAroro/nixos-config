@@ -109,7 +109,7 @@
         };
       nixosConfigurations."anunnaki" =
         nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
+          system = "aarch64-linux";
           modules = [
             hyprland.nixosModules.default
             home-manager.nixosModules.home-manager
