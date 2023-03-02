@@ -22,8 +22,8 @@
     enable = true;
     virtualHosts = {
       "anunnaki.snek.network" = {
-        root = "${./http}";
         extraConfig = ''
+          root = "${./http}";
           file_server
         '';
       };
