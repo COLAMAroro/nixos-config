@@ -107,5 +107,23 @@
             hasHyprland = false;
           };
         };
+      nixosConfigurations."anunnaki" =
+        nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            hyprland.nixosModules.default
+            home-manager.nixosModules.home-manager
+            ./devices/shared.nix
+            ./devices/anunnaki/hardware-configuration.nix
+            ./devices/anunnaki/configuration.nix
+            ./user/cola.nix
+          ];
+          specialArgs = inputs // {
+            isGraphical = false;
+            isNotWSL = true;
+            hasGnome = false;
+            hasHyprland = false;
+          };
+        };
     };
 }
