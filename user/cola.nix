@@ -5,6 +5,7 @@
 , isGraphical ? true
 , hasHyprland ? false
 , hasGnome ? true
+, nixpkgs
 , ...
 }:
 
@@ -72,9 +73,10 @@ in
     inherit (isGraphical);
     inherit (hasHyprland);
     inherit (hasGnome);
+    nixpkgsOutPath = nixpkgs.outPath;
     currentSystem = config.system;
   };
-  home-manager.users.cola = { pkgs, config, ... }: rec {
+  home-manager.users.cola = { pkgs, config, nixpkgsOutPath, ... }: rec {
     # ========== Home Manager Settings ==========
     home.stateVersion = "22.11";
     home.username = "cola";
@@ -91,7 +93,6 @@ in
     nixpkgs.config.allowUnfree = true;
 
     # ========== Packages ==========
-
     home.packages = pkgs.lib.flatten [
       commonPackages
       graphicalPackages
@@ -100,9 +101,12 @@ in
       wslPackage
     ];
 
+    # ========== Registry Settings ==========
+    # Following the tips from https://ayats.org/blog/channels-to-flakes (Thanks!)
+    xdg.configFile."nix/inputs/nixpkgs".source = nixpkgsOutPath;
+    home.sessionVariables.NIX_PATH = "nixpkgs=${config.xdg.configHome}/nix/inputs/nixpkgs$\{NIX_PATH:+:$NIX_PATH}";
+
     # ========== Gnome config ==========
-
-
     dconf = {
       enable = isGraphical;
       settings = {

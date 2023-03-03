@@ -5,6 +5,7 @@
 , isGraphical ? true
 , hasGnome ? true
 , hasHyprland ? false
+, nixpkgs
 , ...
 }:
 
@@ -68,7 +69,6 @@
   };
 
   # ========== Programs Settings ==========
-
   environment.systemPackages = [
     pkgs.wget
     pkgs.micro
@@ -97,7 +97,6 @@
   programs.fish.enable = true;
 
   # ========== Security Settings ==========
-
   security.sudo.enable = false;
   security.doas.enable = true;
   security.doas.extraRules = [{
@@ -107,7 +106,6 @@
   }];
 
   # ========== Nix Settings ==========
-
   nixpkgs.config.allowUnfree = true;
   nix = {
     extraOptions = "experimental-features = nix-command flakes";
@@ -118,7 +116,6 @@
   };
 
   # ========== Gnome Settings ==========
-
   programs.dconf.enable = hasGnome;
   environment.gnome.excludePackages = pkgs.lib.optionals hasGnome [
     pkgs.gnome-tour
@@ -133,6 +130,13 @@
     pkgs.gnome.hitori
     pkgs.gnome.atomix
   ];
+
+  # ========== Registry Settings ==========
+  # Following the tips from https://ayats.org/blog/channels-to-flakes (Thanks!)
+
+  environment.etc."nix/inputs/nixpkgs".source = nixpkgs.outPath;
+  nix.registry.nixpkgs.flake = nixpkgs;
+  nix.nixPath = [ "nixpkgs=/etc/nix/inputs/nixpkgs" ];
 
   # ========== Misc Settings ==========
   services.printing.enable = true;
