@@ -15,8 +15,10 @@
 
   services.xserver.videoDrivers = [ "displaylink" "nvidia" ];
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.beta;
+  hardware.nvidia.modesetting.enable = true;
   hardware.opengl.enable = true;
-  boot.kernelModules = [ "nvidia" ];
+  hardware.opengl.driSupport = true;
+  hardware.opengl.driSupport32Bit = true;
 
   # ========== Boot Settings ==========
   boot.loader.systemd-boot.enable = true;
@@ -32,6 +34,9 @@
   virtualisation.vmware.guest.enable = true;
   virtualisation.virtualbox.host.enable = true;
   virtualisation.virtualbox.host.enableExtensionPack = true;
+
+  # Fuck containers, but I need them for distrobox
+  virtualisation.podman.enable = true;
 
   # ========== Misc Settings ==========
   system.stateVersion = "22.11";
