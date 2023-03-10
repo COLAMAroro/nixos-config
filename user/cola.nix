@@ -121,6 +121,7 @@ in
           "dash-to-panel@jderose9.github.com"
           "nightthemeswitcher-gnome-shell-extension@rmnvgr.gitlab.com"
           "appindicatorsupport@rgcjonas.gmail.com"
+          "nightthemeswitcher@romainvigier.fr"
         ];
         # Set workspace settings
         "org/gnome/desktop/wm/preferences".num-workspaces = 1;
