@@ -74,6 +74,25 @@
             hasHyprland = true;
           };
         };
+      nixosConfigurations."agni" =
+        nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            hyprland.nixosModules.default
+            home-manager.nixosModules.home-manager
+            nixos-hardware.nixosModules.lenovo-thinkpad-l14-amd # Technically a L15, but the L14 is the closest match. And I like danger.
+            ./devices/shared.nix
+            ./devices/agni/hardware-configuration.nix
+            ./devices/agni/configuration.nix
+            ./user/cola.nix
+          ];
+          specialArgs = inputs // {
+            isGraphical = true;
+            isNotWSL = true;
+            hasGnome = true;
+            hasHyprland = true;
+          };
+        };
       nixosConfigurations."thoth" =
         nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
