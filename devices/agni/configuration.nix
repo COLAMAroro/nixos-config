@@ -21,6 +21,9 @@
   # ========== Virtualisation Settings ==========
   virtualisation.libvirtd.enable = true;
 
+  # ========== Fingerprint settings ==========
+  services.fprintd.enable = true; # USB ID 06cb:00f9 Synaptics, Inc. Fingerprint Reader | Natively supported by libfprint
+
   # ========== Misc Settings ==========
   nixpkgs.config.allowUnfree = true;
   system.stateVersion = "22.05"; # Did you read the comment?
